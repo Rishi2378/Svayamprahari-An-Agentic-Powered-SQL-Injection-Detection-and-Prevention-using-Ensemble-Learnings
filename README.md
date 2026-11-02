@@ -1,4 +1,4 @@
-# Svayaṃprahari (Suraksha-AI) 🛡️
+# Svayaṃprahari 🛡️
 ### An Autonomous Agentic AI Framework for Real-Time SQL Injection Detection, Behavioral Confirmation, and Inline Threat Neutralization
 
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
