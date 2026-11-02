@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing App // Enterprise Target System</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Ambient Spatial Particles Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Top Minimal Header -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-flask-vial"></i>
+      </div>
+      <span class="brand-name">TESTING APP</span>
+    </div>
+
+    <!-- Theme & Auth Controls in Top Nav -->
+    <div class="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Light / Dark Theme">
+        <i class="fa-solid fa-sun" id="theme-icon"></i>
+        <span id="theme-text">Light Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Centered Auth Container (Visible when not logged in) -->
+  <main class="auth-container" id="auth-container">
+    
+    <!-- 3D Perspective Card Wrapper -->
+    <div class="card-perspective-wrapper" id="card-wrapper">
+      <div class="glass-auth-card" id="auth-card">
+        
+        <div class="ambient-glow"></div>
+
+        <!-- Auth Card Tabs -->
+        <div class="card-nav">
+          <button class="nav-tab active" data-tab="login-tab" id="tab-login">Sign In</button>
+          <button class="nav-tab" data-tab="register-tab" id="tab-register">Register</button>
+        </div>
+
+        <div class="card-content">
+
+          <!-- ================= TAB 1: SIGN IN ================= -->
+          <div class="tab-pane active" id="login-tab">
+            <div class="header-box">
+              <h2>Testing App Security Gateway</h2>
+              <p>Enter your authorized credentials and security token to access classified databases.</p>
+            </div>
+
+            <!-- Quick Demo Credentials Banner -->
+            <button type="button" class="demo-pill" id="quick-demo-btn">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Fill Authorized Demo (admin@antigravity.io)</span>
+            </button>
+
+            <form id="login-form" class="auth-form">
+              <div class="input-field">
+                <label for="login-email">Authorized Email Address</label>
+                <div class="input-wrapper">
+                  <i class="fa-regular fa-envelope field-icon"></i>
+                  <input type="email" id="login-email" placeholder="name@company.com" required>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="login-password">Master Password</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-lock field-icon"></i>
+                  <input type="password" id="login-password" placeholder="••••••••••••" required>
+                  <button type="button" class="pwd-toggle" id="toggle-login-pwd">
+                    <i class="fa-regular fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Security Layer: Dynamic Captcha Validation (Appears only after credentials verification) -->
+              <div class="input-field" id="captcha-group" style="display: none;">
+                <div class="captcha-header">
+                  <label for="captcha-input"><i class="fa-solid fa-shield-halved text-cyan"></i> Security Verification (Anti-Bot)</label>
+                  <span style="font-size: 11px; opacity: 0.7;">Case-sensitive</span>
+                </div>
+                <div class="captcha-box">
+                  <div class="captcha-display">
+                    <span class="captcha-code" id="captcha-code">A9X7K</span>
+                    <button type="button" class="captcha-refresh-btn" id="captcha-refresh-btn" title="Refresh Captcha">
+                      <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+                    <input type="text" id="captcha-input" placeholder="Enter security code" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); color: var(--text-main);">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="remember-me">
+                  <input type="checkbox" id="remember-check" checked>
+                  <span>Remember session token</span>
+                </label>
+                <a href="#" class="forgot-pwd" id="forgot-link">Reset Credentials</a>
+              </div>
+
+              <button type="submit" class="submit-btn glow-effect" id="login-btn">
+                <span class="btn-text">Verify Credentials <i class="fa-solid fa-arrow-right"></i></span>
+                <span class="btn-spinner hidden"></span>
+              </button>
+            </form>
+
+            <div class="divider">
+              <span>PROTECTED TEST ENVIRONMENT</span>
+            </div>
+
+            <div style="font-size: 11px; text-align: center; color: var(--text-dim); line-height: 1.5;">
+              <i class="fa-solid fa-fingerprint text-cyan"></i> Real-time query telemetry inspected by Suraksha-AI WAF.
+            </div>
+          </div>
+
+          <!-- ================= TAB 2: REGISTER ================= -->
+          <div class="tab-pane" id="register-tab">
+            <div class="header-box">
+              <h2>Request Clearance</h2>
+              <p>Register identity into Testing App classified personnel directory.</p>
+            </div>
+
+            <form id="register-form" class="auth-form">
+              <div class="input-field">
+                <label for="reg-name">Full Personnel Name</label>
+                <div class="input-wrapper">
+                  <i class="fa-regular fa-user field-icon"></i>
+                  <input type="text" id="reg-name" placeholder="Agent Elena Vance" required>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="reg-email">Official Agency Email</label>
+                <div class="input-wrapper">
+                  <i class="fa-regular fa-envelope field-icon"></i>
+                  <input type="email" id="reg-email" placeholder="elena@antigravity.io" required>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="reg-password">Access Password</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-lock field-icon"></i>
+                  <input type="password" id="reg-password" placeholder="Create strong credential" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="remember-me">
+                  <input type="checkbox" required checked>
+                  <span>I accept Security Clearance Non-Disclosure</span>
+                </label>
+              </div>
+
+              <button type="submit" class="submit-btn glow-effect" id="register-btn">
+                <span class="btn-text">Register Personnel <i class="fa-solid fa-shield"></i></span>
+                <span class="btn-spinner hidden"></span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= FULL-SCREEN ENTERPRISE TARGET PORTAL (VISIBLE WHEN LOGGED IN) ================= -->
+  <div id="full-portal-dashboard" class="hidden">
+    
+    <!-- Top Enterprise Navbar -->
+    <header class="portal-nav">
+      <div class="portal-brand">
+        <div class="brand-icon glow"><i class="fa-solid fa-flask-vial"></i></div>
+        <div class="brand-title">
+          <h2>TESTING APP</h2>
+          <span class="sub-title">Classified Intelligence Ledger &bull; Sensitive Asset Database</span>
+        </div>
+      </div>
+
+      <div class="portal-nav-center">
+        <div class="waf-banner-pill">
+          <span class="live-dot"></span>
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>PROTECTED BY SURAKSHA-AI REAL-TIME WAF</span>
+        </div>
+      </div>
+
+      <div class="portal-nav-right">
+        <button type="button" id="portal-theme-toggle-btn" class="theme-toggle-btn" style="margin-right: 8px;">
+          <i class="fa-solid fa-sun" id="portal-theme-icon"></i>
+          <span id="portal-theme-text">Light Theme</span>
+        </button>
+
+        <div class="user-profile-badge">
+          <img id="dash-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="User Avatar">
+          <div class="user-details">
+            <span id="dash-name" class="name">DEMO</span>
+            <span id="dash-email" class="email">admin@antigravity.io</span>
+          </div>
+          <span id="dash-role" class="role-pill">Top Secret Clearance</span>
+        </div>
+        <button id="logout-btn" class="portal-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Full-Width Portal Content -->
+    <div class="portal-content-grid">
+
+      <!-- Executive KPI Summary Cards (5-Column) -->
+      <div class="portal-kpi-row">
+        <div class="p-kpi-card">
+          <div class="p-kpi-icon gold"><i class="fa-solid fa-vault"></i></div>
+          <div class="p-kpi-data">
+            <span class="label">Total Classified Holdings</span>
+            <span class="val" id="kpi-assets">$48,920,400</span>
+            <span class="trend positive"><i class="fa-solid fa-arrow-trend-up"></i> Fed Reserve Reserve Tier 1</span>
+          </div>
+        </div>
+
+        <div class="p-kpi-card">
+          <div class="p-kpi-icon blue"><i class="fa-solid fa-id-card-clip"></i></div>
+          <div class="p-kpi-data">
+            <span class="label">Sensitive Records Indexed</span>
+            <span class="val" id="kpi-users">28,410</span>
+            <span class="trend neutral">PII & Financial Ledger</span>
+          </div>
+        </div>
+
+        <div class="p-kpi-card">
+          <div class="p-kpi-icon cyan"><i class="fa-solid fa-bolt"></i></div>
+          <div class="p-kpi-data">
+            <span class="label">Query Interception Velocity</span>
+            <span class="val" id="kpi-velocity">1,840 req/s</span>
+            <span class="trend positive"><i class="fa-solid fa-gauge-high"></i> Optimal WAF Filtering</span>
+          </div>
+        </div>
+
+        <div class="p-kpi-card">
+          <div class="p-kpi-icon purple"><i class="fa-solid fa-server"></i></div>
+          <div class="p-kpi-data">
+            <span class="label">SQL Execution Latency</span>
+            <span class="val">1.1 ms</span>
+            <span class="trend positive">SQLite Engine v3.45</span>
+          </div>
+        </div>
+
+        <div class="p-kpi-card highlight-waf">
+          <div class="p-kpi-icon green"><i class="fa-solid fa-shield-cat"></i></div>
+          <div class="p-kpi-data">
+            <span class="label">Suraksha-AI Status</span>
+            <span class="val text-green">100% Shielded</span>
+            <span class="trend text-green"><i class="fa-solid fa-circle-check"></i> Zero-Leakage Policy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dual Panel Layout -->
+      <div class="portal-dual-layout">
+
+        <!-- Left Column: Highly Sensitive Enterprise Directory & Financial/PII Ledger -->
+        <div class="portal-card main-table-card">
+          <div class="card-header-flex">
+            <div class="header-left">
+              <h3><i class="fa-solid fa-database"></i> Classified Enterprise Directory & Sensitive Asset Ledger</h3>
+            </div>
+            <div class="header-actions">
+              <input type="text" id="table-search" placeholder="Filter classified records, PII, SSN..." class="table-search-input">
+              <button type="button" id="refresh-data-btn" class="action-btn glow">
+                <i class="fa-solid fa-arrows-rotate"></i> Sync Records
+              </button>
+              <button type="button" id="export-data-btn" class="action-btn">
+                <i class="fa-solid fa-file-shield"></i> Export Encrypted Audit
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th>Clearance ID</th>
+                  <th>Operative / Executive</th>
+                  <th>Secure Contact</th>
+                  <th>Classification Tier</th>
+                  <th>SSN / Tax Identifier</th>
+                  <th>Encrypted Balance</th>
+                  <th>Status</th>
+                  <th>Terminal Access IP</th>
+                </tr>
+              </thead>
+              <tbody id="target-records-body">
+                <tr>
+                  <td><code>SEC-9021</code></td>
+                  <td><strong>Dr. Sarah Jenkins</strong></td>
+                  <td>s.jenkins@corp.net</td>
+                  <td><span class="tier-pill intelligence">Top Secret SCI</span></td>
+                  <td><code>***-**-4819</code></td>
+                  <td><span class="balance-text">$1,450,200.00</span></td>
+                  <td><span class="status-badge success">Active Clearance</span></td>
+                  <td><code>10.0.4.12</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-8834</code></td>
+                  <td><strong>Director Alex Vance</strong></td>
+                  <td>a.vance@techops.io</td>
+                  <td><span class="tier-pill defense">Defense Oversight</span></td>
+                  <td><code>***-**-9012</code></td>
+                  <td><span class="balance-text">$4,128,450.00</span></td>
+                  <td><span class="status-badge success">Verified</span></td>
+                  <td><code>192.168.1.45</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-7712</code></td>
+                  <td><strong>David Miller</strong></td>
+                  <td>d.miller@fintech.com</td>
+                  <td><span class="tier-pill finance">Treasury Auditor</span></td>
+                  <td><code>***-**-3341</code></td>
+                  <td><span class="balance-text">$892,900.00</span></td>
+                  <td><span class="status-badge warning">Audit Pending</span></td>
+                  <td><code>172.16.0.8</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-6549</code></td>
+                  <td><strong>Marcus Wright</strong></td>
+                  <td>m.wright@antigravity.io</td>
+                  <td><span class="tier-pill intelligence">Chief Architect</span></td>
+                  <td><code>***-**-7782</code></td>
+                  <td><span class="balance-text">$12,310,000.00</span></td>
+                  <td><span class="status-badge success">Full Privileges</span></td>
+                  <td><code>127.0.0.1</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-5421</code></td>
+                  <td><strong>Elena Rostova</strong></td>
+                  <td>elena@cybersec.org</td>
+                  <td><span class="tier-pill defense">Cyber Warfare Command</span></td>
+                  <td><code>***-**-1109</code></td>
+                  <td><span class="balance-text">$3,092,150.00</span></td>
+                  <td><span class="status-badge success">Armed Shield</span></td>
+                  <td><code>10.200.5.88</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-4310</code></td>
+                  <td><strong>Robert Chen</strong></td>
+                  <td>r.chen@globalpay.com</td>
+                  <td><span class="tier-pill finance">SWIFT Settlement</span></td>
+                  <td><code>***-**-6554</code></td>
+                  <td><span class="balance-text">$7,215,000.00</span></td>
+                  <td><span class="status-badge success">Verified</span></td>
+                  <td><code>198.51.100.14</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-3298</code></td>
+                  <td><strong>Sophia Martinez</strong></td>
+                  <td>s.martinez@cloudnet.io</td>
+                  <td><span class="tier-pill intelligence">Satellite Telemetry</span></td>
+                  <td><code>***-**-8820</code></td>
+                  <td><span class="balance-text">$2,068,400.00</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td><code>203.0.113.50</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-2187</code></td>
+                  <td><strong>General James Wilson</strong></td>
+                  <td>j.wilson@apexsystems.com</td>
+                  <td><span class="tier-pill defense">Strategic Command</span></td>
+                  <td><code>***-**-5401</code></td>
+                  <td><span class="balance-text">$9,834,500.00</span></td>
+                  <td><span class="status-badge success">High Priority</span></td>
+                  <td><code>192.0.2.77</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-1076</code></td>
+                  <td><strong>Amanda Taylor</strong></td>
+                  <td>a.taylor@datacore.net</td>
+                  <td><span class="tier-pill finance">Cryptographic Vault</span></td>
+                  <td><code>***-**-2299</code></td>
+                  <td><span class="balance-text">$5,175,800.00</span></td>
+                  <td><span class="status-badge success">Verified</span></td>
+                  <td><code>10.0.2.15</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-0965</code></td>
+                  <td><strong>Viktor Dragan</strong></td>
+                  <td>v.dragan@securenet.eu</td>
+                  <td><span class="tier-pill intelligence">Interpol Liaison</span></td>
+                  <td><code>***-**-9182</code></td>
+                  <td><span class="balance-text">$1,540,000.00</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td><code>185.220.101.5</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-0854</code></td>
+                  <td><strong>Linda Kovacs</strong></td>
+                  <td>l.kovacs@techcorp.de</td>
+                  <td><span class="tier-pill finance">Asset Custody</span></td>
+                  <td><code>***-**-3742</code></td>
+                  <td><span class="balance-text">$628,900.00</span></td>
+                  <td><span class="status-badge warning">Review Needed</span></td>
+                  <td><code>91.210.107.4</code></td>
+                </tr>
+                <tr>
+                  <td><code>SEC-0743</code></td>
+                  <td><strong>Tarun Patel</strong></td>
+                  <td>t.patel@fintech.in</td>
+                  <td><span class="tier-pill defense">National Cyber Defense</span></td>
+                  <td><code>***-**-8491</code></td>
+                  <td><span class="balance-text">$4,412,300.00</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td><code>103.21.244.0</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Column: System Audit Stream & Telemetry Stats -->
+        <div class="portal-side-column">
+          
+          <!-- Live Target System Audit Log Stream -->
+          <div class="portal-card audit-log-card">
+            <div class="card-header-flex">
+              <h3><i class="fa-solid fa-list-check"></i> Testing App Audit Stream</h3>
+              <span class="live-tag">LIVE SQL AUDIT</span>
+            </div>
+            <div class="audit-log-terminal" id="target-audit-terminal">
+              <div class="log-line"><span class="time">00:29:10</span> <span class="tag info">[SYS]</span> Testing App node initialized on port 3000</div>
+              <div class="log-line"><span class="time">00:29:12</span> <span class="tag success">[DB]</span> SQLite database connected: database.sqlite</div>
+              <div class="log-line"><span class="time">00:29:15</span> <span class="tag warning">[HOOK]</span> Suraksha-AI Telemetry Middleware active</div>
+              <div class="log-line"><span class="time">00:29:20</span> <span class="tag info">[AUTH]</span> Personnel authenticated: admin@antigravity.io</div>
+              <div class="log-line"><span class="time">00:29:22</span> <span class="tag success">[QUERY]</span> SELECT * FROM users WHERE email='admin@antigravity.io'</div>
+              <div class="log-line"><span class="time">00:29:30</span> <span class="tag info">[TELEMETRY]</span> Telemetry payload dispatched to http://localhost:5000/api/target/telemetry</div>
+            </div>
+          </div>
+
+          <!-- Target Server Architecture Info -->
+          <div class="portal-card info-card">
+            <h3><i class="fa-solid fa-microchip"></i> Testing App Specifications</h3>
+            <div class="spec-list">
+              <div class="spec-item">
+                <span class="spec-label">Target Name</span>
+                <span class="spec-val text-cyan"><strong>Testing App</strong></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Target Ingress URL</span>
+                <span class="spec-val"><code>http://localhost:3000/api/login</code></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Access Control</span>
+                <span class="spec-val text-green"><i class="fa-solid fa-lock"></i> Protected (Captcha / Token)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Suraksha-AI WAF</span>
+                <span class="spec-val text-green"><i class="fa-solid fa-circle-check"></i> Online (port 5000)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Dashboard Telemetry</span>
+                <span class="spec-val text-blue">http://localhost:5173</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 Testing App &bull; Protected by Suraksha-AI Real-Time Threat Mitigation</p>
+  </footer>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

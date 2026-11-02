@@ -1,0 +1,42 @@
+# Python & Environments
+venv/
+env/
+ENV/
+Backend/venv/
+.env
+Backend/.env
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+Backend/logs/
+Backend/app/logs/
+Backend/instance/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+Backend/suraksha.db
+Backend/instance/*.db
+
+# Node & Frontend dependencies
+node_modules/
+Frontend/node_modules/
+New1/node_modules/
+SQLGuard-master/sqli-dashboard/node_modules/
+SQLGuard-master/tailwindcss4/node_modules/
+dist/
+Frontend/dist/
+build/
+Frontend/build/
+.cache/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak

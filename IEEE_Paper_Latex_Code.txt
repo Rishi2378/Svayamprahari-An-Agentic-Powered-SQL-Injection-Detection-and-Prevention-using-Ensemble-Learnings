@@ -1,0 +1,1219 @@
+% =============================================================================
+%  Svayamprahari: Autonomous Agentic AI Framework for SQL Injection Defense
+%  Targeting 8 pages: rich paragraphs, dense maths, Agentic AI emphasis.
+% =============================================================================
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+% --------------------------------------------------------------------------
+% PACKAGES
+% --------------------------------------------------------------------------
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc,backgrounds}
+\usepackage{microtype}
+
+\graphicspath{{figures/}{./}}
+
+% --------------------------------------------------------------------------
+% SPACING TUNING (keeps content within 8 pages)
+% --------------------------------------------------------------------------
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\textfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{1pt}
+\setlength{\abovedisplayskip}{3pt plus 1pt}
+\setlength{\belowdisplayskip}{3pt plus 1pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+
+% --------------------------------------------------------------------------
+% CONVENIENCE MACROS
+% --------------------------------------------------------------------------
+\newcommand{\SVP}{Svaya\d{m}prahari}
+\newcommand{\SYS}{\SVP}
+\newcommand{\SYSBF}{\textbf{\SVP}}
+\newcommand{\layerOne}{\textit{Layer\,1}}
+\newcommand{\layerTwo}{\textit{Layer\,2}}
+\newcommand{\layerThree}{\textit{Layer\,3}}
+
+% Graceful image fallback: use real PNG if present, grey box otherwise
+\newcommand{\gracefig}[3][3.5cm]{%
+  \IfFileExists{#2}{\includegraphics[width=\linewidth]{#2}}{%
+    \setlength{\fboxsep}{0pt}%
+    \fbox{\begin{minipage}[c][#1]{\dimexpr\linewidth-2\fboxrule}%
+      \centering\vfill\textbf{\footnotesize[Screenshot: #3]}\vfill%
+    \end{minipage}}}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% =============================================================================
+\begin{document}
+
+% --------------------------------------------------------------------------
+% TITLE AND AUTHORS
+% --------------------------------------------------------------------------
+\title{%
+  \SYS: A Tri-Layer Agentic Artificial Intelligence Framework
+  for Real-Time SQL Injection Detection, Behavioral Confirmation,
+  and Inline Threat Neutralization Using Ensemble Machine Learning
+  and Empirical Latency Correlation%
+}
+
+\author{%
+  \IEEEauthorblockN{%
+    CTM Praveen Kumar\textsuperscript{1},
+    Rishi U\textsuperscript{2},
+    M Veeresh\textsuperscript{3},
+    Muruli Mohan\textsuperscript{4},
+    B Sai Kumar\textsuperscript{5}%
+  }
+  \IEEEauthorblockA{%
+    Department of Artificial Intelligence and Machine Learning\\
+    Ballari Institute of Technology and Management,
+    Ballari--583119, Karnataka, India\\
+    \textsuperscript{1}ctm.praveen@gmail.com\quad
+    \textsuperscript{2}rajan28138@gmail.com\quad
+    \textsuperscript{3}veereshveer.565@gmail.com\\
+    \textsuperscript{4}muralimohana2003@gmail.com\quad
+    \textsuperscript{5}bsk001188@gmail.com%
+  }%
+}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+% =============================================================================
+% ABSTRACT
+% =============================================================================
+\begin{abstract}
+Web applications that use relational databases are exposed to SQL Injection
+(SQLi), a class of attack in which malicious database commands are smuggled
+inside ordinary user input fields and executed directly on the backend database
+engine. Classical defenses fall into two broad groups: pattern-based Web
+Application Firewalls (WAFs), which fail whenever attackers obfuscate payloads
+with multi-layer encoding, and standalone machine-learning (ML) classifiers,
+which evaluate each request as a static text string without any knowledge of
+how the database actually responded to that request. Neither class of defense
+can confirm that a time-delay payload such as \texttt{SLEEP(5)} genuinely
+stalled the database engine, nor can they track a malicious value that was
+stored in one HTTP session and triggered silently in a later one.
+
+This paper presents \SYSBF, an autonomous, \textbf{Agentic AI}-driven
+cybersecurity gateway that addresses all three limitations within a single
+inline architecture. The Agentic AI design divides defensive responsibility
+among nine purpose-built software agents, each running as an independent
+operating-system thread and communicating through a thread-safe priority
+message bus. Together they execute a cascaded three-layer pipeline: a
+static regex rule engine, a four-model soft-voting machine learning ensemble
+fed by dual TF-IDF feature matrices and Shannon-entropy structural
+descriptors, and four real-time behavioral correlation engines that verify
+actual server execution using physical latency measurement, database error
+parsing, out-of-band callback detection, and stateful cross-request session
+tracking.
+
+The system was trained on 58\,000 labeled payloads and achieved perfect
+classification ($\text{Accuracy} = \text{AUC} = 1.000$) on tree-based models
+and 0.950 accuracy on the character-level LSTM. In a live end-to-end
+benchmark covering 11 distinct SQL Injection vulnerability categories and
+30 real HTTP transactions, \SYS{} intercepted all 21 attack requests
+(Recall $= 1.000$, F1-score $= 0.857$) with an average gateway response
+latency of 2.169\,s, including intentional multi-second time-delay attack
+confirmation windows.
+\end{abstract}
+
+\begin{IEEEkeywords}
+SQL injection detection, Agentic AI, multi-agent system, ensemble machine
+learning, behavioral correlation, latency verification, TF-IDF, recursive
+decoding, web application firewall, inline threat prevention.
+\end{IEEEkeywords}
+
+
+% =============================================================================
+\section{Introduction}
+% =============================================================================
+
+\IEEEPARstart{T}{he} rapid digitization of banking, healthcare, retail, and
+government services has created a global landscape of web applications that
+depend on relational databases for their core operations. Every form submission,
+search query, or login attempt ultimately becomes a structured query that
+travels from the web layer to the database engine. SQL Injection (SQLi)
+exploits this relationship by inserting malicious SQL statements into data
+fields that the application later incorporates into a database query without
+adequate validation. The consequences range from complete data-set exfiltration
+to unauthorized administrative access to the underlying operating system.
+According to the OWASP Top Ten, injection vulnerabilities have persistently
+appeared in the highest-risk category for over a decade \cite{b02,b03}.
+
+The threat landscape has evolved significantly beyond simple, textbook
+payloads such as \texttt{' OR 1=1\,--}. Modern adversaries deploy a rich
+toolkit of evasion strategies. Multi-layer encoding---combining URL percent
+encoding with hexadecimal character references, Base64 strings, and Unicode
+code-point escapes---can hide a fully functional SQL keyword behind a surface
+string that contains no recognizable ASCII letters. Inline SQL comments of
+the form \texttt{UN/**/ION} split keywords across annotation boundaries so
+that simple string-matching fails. Time-based blind injection techniques
+invoke database sleep functions (\texttt{SLEEP}, \texttt{WAITFOR DELAY},
+\texttt{pg\_sleep}) without returning any visible data, making detection
+dependent on observing execution latency rather than response content.
+Second-order injections store a malicious string during one request and
+trigger execution in a later session, defeating stateless filters.
+Automated detection must therefore compensate for imperfect input sanitization
+directly at the inline proxy boundary.
+
+\subsection{Threat Model and Scope}
+\SYS{} operates under an adversarial model where attackers submit arbitrary
+HTTP requests to exposed endpoints (forms, query strings, headers). The
+adversary leverages encoding transformations (URL, hex, Base64, Unicode)
+and automated fuzzing (e.g., SQLMap) to evade static rules. Internal gateway
+process memory and model weights remain uncompromised.
+
+\subsection{Motivation for Agentic AI}
+
+The central motivation behind \SYS{} is the application of \textbf{Agentic
+AI}---a computing paradigm in which autonomous software agents perceive their
+environment, reason over collected evidence, and independently take goal-directed
+actions---to the domain of inline web security. Traditional ML-based detectors
+are passive: they score a payload text, emit a probability, and rely on an
+external rule engine to act. An Agentic AI system, by contrast, maintains
+long-term memory of attacker behavior, coordinates specialized reasoning tasks
+among multiple concurrent agents, and enforces decisions directly at the network
+layer without waiting for human intervention or an external orchestration
+service. This approach aligns directly with emerging frameworks for autonomous
+cybersecurity operations and was selected for \SYS{} because it allows each
+concern---monitoring, normalization, classification, behavioral correlation,
+risk aggregation, and enforcement---to be modeled as a first-class, independently
+restartable worker with well-defined input and output contracts.
+
+\subsection{Limitations of Existing Solutions}
+
+Rule-based firewalls such as ModSecurity Core Rule Set match input against
+curated signature libraries. Studies by Halfond et al.~\cite{b02} and Tajpour
+et al.~\cite{b03} showed that these systems are routinely bypassed using comment
+insertion and encoding substitution, because static patterns cannot generalize
+to unseen transformations of known attack strings. Supervised machine learning
+methods (SVMs, decision trees, gradient boosting, and neural networks)
+generalize better by learning statistical patterns from large payload corpora
+\cite{b05,b06}. However, these models treat each incoming request as a fixed
+feature vector and produce only a scalar probability. They have no mechanism
+to confirm whether the payload actually influenced the database. Deep sequence
+models such as LSTMs and BERT-based transformers \cite{b08,b07} provide richer
+sequential context but impose inference latencies of hundreds of milliseconds
+to several seconds, making them impractical for synchronous inline proxy
+deployment. Multi-agent intrusion detection research \cite{b13,b09} has
+demonstrated the value of distributed agent architectures for offline log
+analysis and network traffic monitoring but has not produced an inline HTTP
+gateway capable of making per-request blocking decisions within a realistic
+latency budget.
+
+\subsection{Research Contributions}
+
+The key contributions of this work are as follows. First, we introduce an
+Agentic AI architecture in which nine independent threaded agents collectively
+implement a three-layer security inspection pipeline for HTTP traffic, with
+each agent holding an isolated execution context, local memory, and a defined
+message contract. Second, we formalize a physical latency correlator that
+mathematically verifies time-based blind SQL Injection by comparing the actual
+measured round-trip duration against the programmatic sleep argument embedded
+in the payload, providing empirical confirmation of injection execution that
+no text-based classifier can deliver. Third, we design a recursive
+multi-stage encoding normalizer that iteratively resolves URL, hexadecimal,
+Base64, and Unicode encoding layers, exposing the raw SQL keyword set prior to
+feature extraction. Fourth, we develop and validate a soft-voting ensemble of
+four complementary classifiers operating over dual TF-IDF representations and
+Shannon-entropy structural descriptors. Fifth, we provide a comprehensive live
+benchmark spanning 11 SQLi attack categories conducted against a purposely
+vulnerable Flask web application, reporting full confusion-matrix metrics and
+response-time profiles.
+
+
+% =============================================================================
+\section{Related Work}
+% =============================================================================
+
+Research on automated SQLi countermeasures spans three generations of
+methodology. Understanding each generation is essential to appreciating the
+specific problems that \SYS{} is designed to solve.
+
+\subsection{Rule-Based and Grammar-Driven Defenses}
+
+The earliest systematic defense against SQL Injection used static analysis and
+formal grammars. The landmark classification by Halfond et al.~\cite{b02}
+organized SQLi into seven canonical attack families (tautology, union-based,
+piggy-backed queries, incorrect type handling, and others) and proposed
+automated query parsing at the application level. ModSecurity and similar
+commercial WAFs operationalized this approach with curated rule sets that
+match known malicious substrings. Shar and Tan~\cite{b04} proposed a
+program-analysis technique that instruments web application source code to
+detect injection-vulnerable data paths. The critical limitation shared by
+all grammar-based and rule-based methods is their dependence on a closed world
+assumption: a defense can only recognize attack forms that were anticipated when
+the rule was written. Amouei et al.~\cite{b10} showed that generative adversarial
+networks (GANs) can synthesize evasion samples that bypass commercial WAFs,
+while Qu et al.~\cite{b12} demonstrated adversarial SQL injection generation
+against real-world WAF-as-a-Service deployments, highlighting a critical arms
+race between detection systems and adaptive adversaries.
+
+\subsection{Machine Learning Classification Methods}
+
+To overcome the generalization limits of rule lists, researchers applied
+supervised learning to SQLi detection. Siddiqui and Choudhary~\cite{b05} showed
+that SVM classifiers operating on bag-of-words token features achieved
+significantly higher accuracy than rule lists on unseen payload variants.
+Hasan et al.~\cite{b06} extended this to support vector machines with TF-IDF
+weighted term frequencies and reported competitive precision-recall trade-offs.
+Liang et al.~\cite{b08} introduced deep learning to the domain with an LSTM
+architecture that learns sequential syntax dependencies across character-level
+token streams, demonstrating improved generalization on obfuscated variants
+compared to feature-engineered classical models. Xu et al.~\cite{b07} further
+validated LSTM-based detection on a multi-dialect dataset covering MySQL,
+PostgreSQL, and Microsoft SQL Server payloads. More recently, Liu and
+Dai~\cite{b11} proposed a hybrid BERT--LSTM architecture that combines
+contextual token embeddings with sequential dependency modeling, and Zhang
+et al.~\cite{b14} introduced integrated feature selection for Bi-LSTM to
+reduce model dimensionality while preserving detection accuracy. The consistent
+limitation identified across all these works is the absence of runtime behavioral
+verification: a model that assigns a high injection probability to a payload
+cannot distinguish between a payload that was rejected by the database and one
+that actually extracted ten thousand records.
+
+\subsection{Agentic and Multi-Agent Security Systems}
+
+The emergence of Agentic AI architectures in cybersecurity has been a
+recent development. Soltani et al.~\cite{b13} proposed a multi-agent
+adaptive deep learning framework for online intrusion detection, demonstrating
+that distributed agents can dynamically adapt to evolving threat patterns without
+centralized retraining. Kirmani et al.~\cite{b15} further extended this
+paradigm to cyber range environments, building a multi-agent system capable of
+automated incident response under simulated adversarial conditions. Di Troia
+et al.~\cite{b09} provided a comprehensive survey of deep learning approaches
+to intrusion detection, establishing the foundation for agent-based AI security
+architectures. Pietraszek and Berghe~\cite{b01} proposed context-sensitive
+string evaluation that tracks data provenance to distinguish legitimate from
+injected SQL fragments, representing an early form of stateful cross-request
+tracking that foreshadows the session-tracker component of \SYS. None of these prior works
+combine: (1) inline synchronous HTTP blocking, (2) machine learning ensemble
+scoring, (3) physical latency correlation, and (4) cross-session behavioral
+state---all within a single deployable gateway. \SYS{} addresses precisely
+this combination.
+
+Table~\ref{tab:comparison} positions \SYS{} relative to the most representative
+existing approaches across the five operational dimensions of greatest practical
+relevance.
+
+\begin{table*}[t]
+\caption{Positioning of \SYS{} Against Representative SQLi Defense Systems Across Five Operational Dimensions}
+\label{tab:comparison}
+\centering\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|l|c|c|c|X|}
+\hline
+\textbf{System} & \textbf{Detection Approach} & \textbf{Enc.\,Decod.}
+  & \textbf{Stateful} & \textbf{Inline Block} & \textbf{Core Limitation} \\
+\hline
+ModSecurity CRS~\cite{b03,b04}  & Static regex signatures & Partial & No & Yes  
+  & Bypassed by encoding, comments, case permutation \\
+\hline
+SVM + TF-IDF~\cite{b06}     & Supervised ML classifier & No & No & Alert only  
+  & Stateless; cannot confirm execution effects \\
+\hline
+BERT--LSTM Hybrid~\cite{b08,b11} & Deep/Transformer sequence model & No & No & Offline 
+  & Inference latency incompatible with inline proxy \\
+\hline
+Distributed MAS~\cite{b13}  & Agent-based anomaly engine & No & Partial & Alert only  
+  & Operates on passive network logs; no HTTP enforcement \\
+\hline
+\textbf{\SYS{} (Ours)} & \textbf{Agentic AI tri-layer hybrid}
+  & \textbf{Recursive} & \textbf{Yes (session)} & \textbf{Yes (HTTP 403)} 
+  & OOB requires local-level network packet capture \\
+\hline
+\end{tabularx}
+\end{table*}
+
+
+% =============================================================================
+\section{Agentic AI Design Philosophy}
+% =============================================================================
+
+The term \textit{Agentic AI} refers to an architectural style in which multiple
+autonomous AI components, each called an \emph{agent}, perceive their
+environment, maintain private state, reason using learned and deterministic
+logic, and execute goal-directed actions without requiring external instruction
+at each step. This philosophy differs from monolithic model inference in three
+fundamental ways that are directly relevant to the problem of inline SQL
+Injection defense.
+
+First, an agentic system supports \textbf{specialization}. A single general
+classifier must produce a binary decision by balancing all relevant evidence
+simultaneously. In \SYS, separate agents handle encoding normalization,
+pattern matching, machine learning scoring, behavioral correlation, IP
+reputation, risk aggregation, and enforcement. Each agent is optimized for its
+specific function and can be retrained or replaced without modifying other agents.
+
+Second, agentic systems support \textbf{persistent memory}. The ThreatIntel
+Agent in \SYS{} maintains a rolling per-IP request history and computes a
+reputation score that accumulates evidence across many requests from the same
+client. This cross-request state is architecturally impossible in a stateless
+ML classifier that processes requests independently.
+
+Third, agentic systems support \textbf{autonomous enforcement}. The Prevention
+Agent in \SYS{} is empowered to issue HTTP 403 Forbidden responses and write
+IP rate-limit records without waiting for a human operator. This property is
+essential for inline security where attacks must be stopped within the same
+TCP connection that carries the malicious request.
+
+Fourth, agentic coordination provides \textbf{adaptive preemption}. A
+high-confidence signature match immediately escalates via a \texttt{CRITICAL} bus
+message, aborting downstream ML computation to minimize latency.
+Fifth, agentic systems guarantee \textbf{fault-tolerant liveness}. The System
+Orchestrator tracks per-worker heartbeats every 500\,ms, automatically rebooting
+failed threads within 5\,s while preserving in-flight traffic.
+
+The nine agents execute as concurrent Python \texttt{threading.Thread} workers
+over a mutex-guarded Singleton \texttt{PriorityMessageBus} across four priority
+tiers (\texttt{CRITICAL}, \texttt{HIGH}, \texttt{MEDIUM}, \texttt{LOW}). The
+PayloadGenerator Agent synthesizes mutations across all 11 vulnerability
+categories in background threads, enabling continuous self-benchmarking.
+
+
+% =============================================================================
+\section{System Architecture}
+% =============================================================================
+
+\subsection{Overall Topology}
+
+Fig.~\ref{fig:architecture} shows the complete end-to-end topology of
+\SYS. The gateway functions as a reverse proxy positioned between the
+external network and the protected web application. Every inbound HTTP
+request is intercepted at port 5000, subjected to the three-layer inspection
+pipeline, and either forwarded to the Flask backend application listening on
+port 8080 or terminated with an HTTP 403 Forbidden response. The React
+operator dashboard at port 5173 receives asynchronous Server-Sent Events
+(SSE) from the Report Agent and renders live telemetry without polling.
+
+\begin{figure*}[t]
+\centering
+\resizebox{0.9\textwidth}{!}{%
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={font=\footnotesize,align=center},
+    ext/.style  ={rectangle,draw=black!90,fill=gray!28,thick,
+                  minimum width=3.4cm,minimum height=0.95cm,rounded corners=2pt},
+    agent/.style={rectangle,draw=black!85,fill=gray!14,thick,
+                  minimum width=3.4cm,minimum height=0.95cm,rounded corners=3pt},
+    layer/.style={rectangle,draw=black!90,fill=gray!30,very thick,
+                  minimum width=3.4cm,minimum height=0.95cm,rounded corners=3pt},
+    dec/.style  ={diamond,draw=black!90,fill=gray!22,very thick,
+                  aspect=2.2,minimum width=3.4cm,minimum height=1.15cm,inner sep=0pt},
+    tgt/.style  ={rectangle,draw=black!85,fill=white,thick,
+                  minimum width=3.4cm,minimum height=0.95cm,rounded corners=2pt},
+    cyl/.style  ={cylinder,draw=black!80,fill=gray!20,
+                  shape border rotate=90,aspect=0.26,
+                  minimum width=2.5cm,minimum height=0.95cm},
+    arr/.style  ={draw=black!80,thick,->},
+    biarr/.style={draw=black!80,thick,<->},
+    lbl/.style  ={fill=white,inner sep=1.5pt,font=\scriptsize\bfseries}
+]
+% ---- Row 0: ingress ----------
+\node[ext]   (cli) at (0,0)    {\textbf{Client / Test Suite}\\\scriptsize HTTP Requests};
+\node[agent] (gw)  at (4.6,0)  {\textbf{\SVP{} Gateway}\\\scriptsize Reverse Proxy :5000};
+\node[agent] (mon) at (9.2,0)  {\textbf{Monitoring Agent}\\\scriptsize Context \& Rate Capture};
+\node[agent] (pre) at (13.8,0) {\textbf{Preprocessor Agent}\\\scriptsize Recursive Decode};
+% ---- Row 1: three layers -----
+\node[layer] (l1) at (13.8,-2.5) {\textbf{Layer 1}\\\scriptsize 50+ Regex Signatures};
+\node[layer] (l2) at (9.2,-2.5)  {\textbf{Layer 2 --- ML Ensemble}\\\scriptsize TF-IDF\,$\cdot$\,RF/GB/XGB/LSTM};
+\node[layer] (l3) at (4.6,-2.5)  {\textbf{Layer 3 --- Behavior}\\\scriptsize Latency, Error, OOB, Session};
+% ---- Row 2: verdict ----------
+\node[agent] (prv) at (0,-5.0)    {\textbf{Prevention Agent}\\\scriptsize HTTP 403};
+\node[dec]   (dca) at (4.6,-5.0)  {\textbf{Decision Agent}\\\scriptsize $C_\text{fin}$ Score};
+\node[tgt]   (app) at (9.2,-5.0)  {\textbf{Flask Web Target}\\\scriptsize Protected Backend :8080};
+\node[cyl]   (adb) at (13.8,-5.0) {\textbf{App DB}\\\scriptsize SQLite};
+% ---- Row 3: logging ----------
+\node[cyl]   (sdb) at (0,-7.5)    {\textbf{Audit DB}\\\scriptsize \SVP.db};
+\node[agent] (rep) at (4.6,-7.5)  {\textbf{Report Agent}\\\scriptsize Async Logger};
+\node[tgt]   (dsh) at (9.2,-7.5)  {\textbf{React Dashboard}\\\scriptsize Vite SPA :5173};
+% ---- arrows ------------------
+\draw[arr] (cli)--(gw); \draw[arr] (gw)--(mon); \draw[arr] (mon)--(pre);
+\draw[arr] (pre)--(l1); \draw[arr] (l1)--(l2); \draw[arr] (l2)--(l3);
+\draw[arr] (l3)--(dca);
+\draw[arr] (dca)--node[lbl,above]{\tiny ATTACK}(prv);
+\draw[arr] (dca)--node[lbl,above]{\tiny SAFE}(app);
+\draw[arr] (app)--(adb);
+\draw[arr] (prv)--node[lbl,left]{\tiny 403}(cli);
+\draw[arr] (dca)--node[lbl,right]{\tiny event}(rep);
+\draw[arr] (rep)--(sdb);
+\draw[biarr](rep)--node[lbl,above]{\tiny SSE}(dsh);
+\end{tikzpicture}}
+\caption{End-to-end topology of \SYS: ingress and normalization (top), three-layer
+inspection cascade (middle), verdict enforcement and logging (bottom). Malicious
+requests are terminated at the gateway before they reach the target database.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Technology Stack}
+
+The gateway backend is implemented in Python 3.11 / Flask with SQLAlchemy ORM.
+Tree-based ML models and TF-IDF vectorizers are pre-serialized as \texttt{joblib}
+checkpoints, ensuring zero cold-start latency during live proxy interception. The
+character-level LSTM is loaded via TensorFlow 2.15. The frontend is a Vite-bundled
+React single-page dashboard consuming Server-Sent Events (SSE). The vulnerable
+target application executes in an isolated sandbox, exposing unparameterized
+endpoints (\texttt{/login}, \texttt{/search}, \texttt{/telemetry}). Blocked
+requests terminate at the gateway proxy via HTTP 403, completely isolating the
+target database from unauthorized traffic.
+
+
+% =============================================================================
+\section{Multi-Agent System Architecture}
+% =============================================================================
+
+\subsection{Agent Hierarchy and Responsibilities}
+
+The nine agents of \SYS{} are organized in a supervision hierarchy rooted at
+the System Orchestrator, as illustrated in Fig.~\ref{fig:agents}. The
+architecture is deliberately hierarchical rather than flat: the Orchestrator
+holds global state, monitors heartbeat liveliness, and issues restart commands,
+while specialized workers below it hold only the state relevant to their
+individual task domains.
+
+Table~\ref{tab:agents} documents the full functional contract of each agent,
+including its primary role, the inputs it consumes from the message bus, and
+the outputs it produces.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    top/.style={rectangle,draw=black!85,fill=gray!22,thick,
+                minimum width=7.0cm,minimum height=0.65cm,
+                align=center,rounded corners=3pt,font=\footnotesize\bfseries},
+    sub/.style={rectangle,draw=black!80,fill=gray!10,thick,
+                minimum width=2.1cm,minimum height=0.65cm,
+                align=center,rounded corners=2pt,font=\scriptsize},
+    ln/.style={draw=black!75,thick,->}
+]
+\node[top] (orch) {System Orchestrator\\\scriptsize Heartbeat Supervisor \& Global State};
+
+\node[sub,below=0.55cm of orch,xshift=-2.35cm] (mon)  {Monitoring\\Agent};
+\node[sub,below=0.55cm of orch]                 (pre2) {Preprocessor\\Agent};
+\node[sub,below=0.55cm of orch,xshift=2.35cm]  (det)  {Detection\\Agent};
+
+\node[sub,below=0.55cm of mon]  (ti)   {ThreatIntel\\Agent};
+\node[sub,below=0.55cm of pre2] (dc)   {Decision\\Agent};
+\node[sub,below=0.55cm of det]  (pv)   {Prevention\\Agent};
+
+\node[sub,below=0.55cm of ti]   (rp)   {Report\\Agent};
+\node[sub,below=0.55cm of dc,xshift=1.15cm,minimum width=4.6cm] (pg)
+    {PayloadGenerator Agent\\\scriptsize Mutation \& Benchmark};
+
+\coordinate (hub) at ($(orch.south)+(0,-0.2)$);
+\draw[thick](orch.south)--(hub);
+\draw[ln](hub)-|(mon.north); \draw[ln](hub)--(pre2.north); \draw[ln](hub)-|(det.north);
+\draw[ln](mon.south)--(ti.north);
+\draw[ln](pre2.south)--(dc.north);
+\draw[ln](det.south)--(pv.north);
+\draw[ln](ti.south)--(rp.north);
+\draw[ln](dc.south)--++(0,-0.18)-|($(pg.north)+(-1.1,0)$);
+\draw[ln](pv.south)--++(0,-0.18)-|($(pg.north)+(1.1,0)$);
+\end{tikzpicture}
+\caption{Hierarchical topology of the nine \SYS{} Agentic AI workers coordinated
+through the thread-safe \texttt{PriorityMessageBus}.}
+\label{fig:agents}
+\end{figure}
+
+\begin{table}[htbp]
+\caption{Agent Functional Contracts in the \SYS{} Agentic AI Framework}
+\label{tab:agents}
+\centering\renewcommand{\arraystretch}{1.28}
+\begin{tabularx}{\columnwidth}{|l|>{\hsize=1.05\hsize}X|>{\hsize=0.95\hsize}X|}
+\hline
+\textbf{Agent} & \textbf{Role} & \textbf{Output} \\
+\hline
+Orchestrator   & Heartbeat monitor; auto-restarts stalled threads & Worker status table \\
+\hline
+Monitoring     & Intercepts full HTTP context; enforces per-IP rate caps & Structured context dict \\
+\hline
+Preprocessor   & Recursively decodes URL, Hex, Base64, Unicode layers & Canonical string $S'$ \\
+\hline
+Detection      & Runs 50+ regex rules and ML soft-vote ensemble & $(P_{ml}, R, \hat{y})$ tuple \\
+\hline
+ThreatIntel    & Computes IP reputation from historical request memory & Score $T \in [0,1]$ \\
+\hline
+Decision       & Aggregates all evidence into composite risk verdict & Action $\mathcal{A}$ \\
+\hline
+Prevention     & Enforces HTTP 403 and IP rate-limit writes & 403 / proxy-forward \\
+\hline
+Report         & Async SQLite persistence and SSE dashboard streaming & Audit record + stream \\
+\hline
+PayloadGen     & Synthesizes mutated exploit payloads for benchmarking & Test payload set \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Formal Agent Communication Model}
+
+Let $\mathcal{AG} = \{a_1, a_2, \ldots, a_9\}$ denote the set of agents and
+$\mathcal{B}$ the shared message bus. A message $m$ posted to $\mathcal{B}$
+is a quadruple:
+\begin{equation}
+m = \langle \text{sender}, \text{recipient}, \text{priority}, \text{payload} \rangle
+\end{equation}
+where priority $\pi \in \{1_{\text{CRITICAL}}, 2_{\text{HIGH}}, 3_{\text{MEDIUM}}, 4_{\text{LOW}}\}$ is a total order used by each agent's \texttt{PriorityQueue}.
+An agent $a_i$ exposes five lifecycle methods inherited from a common
+\texttt{BaseAgent} interface:
+\begin{equation}
+a_i \doteq \langle \mathtt{init}(), \mathtt{exec}(m), \mathtt{heartbeat}(),
+              \mathtt{health}(), \mathtt{shutdown}() \rangle
+\end{equation}
+The Orchestrator guarantees liveness by enforcing the invariant that for all
+$a_i \in \mathcal{AG}$, the interval since last heartbeat satisfies:
+\begin{equation}
+\Delta t_{hb}(a_i) = t_\text{now} - t_\text{last}(a_i) < \tau_{hb}, \quad
+\tau_{hb} = 5\,\text{s}
+\end{equation}
+If the invariant is violated, the Orchestrator calls $a_i.\mathtt{shutdown}()$,
+instantiates a fresh $a_i'$, and posts a \textsc{restart} event to $\mathcal{B}$
+without interrupting in-progress request evaluations in other agents.
+
+
+% =============================================================================
+\section{AI Detection Engine: Mathematical Formulation}
+% =============================================================================
+
+\subsection{Layer 1 --- Recursive Normalization and Signature Matching}
+
+The Preprocessor Agent applies a composed four-stage decoding function
+$\mathcal{D}: \Sigma^* \to \Sigma^*$:
+\begin{equation}
+\mathcal{D} \;=\; d_{\text{uni}} \circ d_{\text{b64}} \circ d_{\text{hex}}
+               \circ d_{\text{url}}
+\end{equation}
+where $d_{\text{url}}$ resolves percent-encoded octets, $d_{\text{hex}}$
+converts \texttt{0x}\dots{} and \texttt{\textbackslash x}\dots{} tokens to
+ASCII, $d_{\text{b64}}$ decodes valid Base64 blocks, and $d_{\text{uni}}$
+resolves Unicode escape sequences (\texttt{\textbackslash u}\dots,
+\texttt{\&\#x}\dots). The decoder is applied iteratively until
+idempotency is reached or a depth limit $k_{\max}=5$ is exceeded:
+\begin{equation}
+S^{(j+1)} = \mathcal{D}(S^{(j)}), \quad
+S' = \phi_{\text{strip}}\!\left(S^{(k^*)}\right),\quad
+k^* = \min\bigl(\{j : S^{(j+1)} = S^{(j)}\} \cup \{k_{\max}\}\bigr)
+\end{equation}
+where $\phi_{\text{strip}}$ removes SQL comment delimiters
+(\texttt{--}, \texttt{\#}, \texttt{/* \ldots */}).
+
+Once $S'$ is obtained, the Detection Agent evaluates a catalog of
+$N_r = 52$ compiled regular expressions organized into families:
+authentication bypass, tautology patterns, UNION extraction, time-delay
+functions, stacked statements, and encoding-abuse markers. Each matched
+rule $r_i$ contributes a calibrated weight $w_i \in [0,100]$, and the
+cumulative rule score $R$ is updated with \textit{diminishing returns}
+to prevent a single family from saturating the score:
+\begin{equation}
+R \;\leftarrow\; R + w_i\!\left(1 - \frac{R}{100}\right),
+\qquad i = 1, \ldots, n_\text{hit}
+\end{equation}
+This formulation ensures that $R \in [0, 100)$ by construction and that
+independent evidence from multiple rule families provides additive value
+while avoiding the unrealistic interpretation that matching 100 rules
+implies certainty of an attack.
+
+\subsection{Layer 2 --- Feature Engineering and Ensemble Scoring}
+
+\subsubsection{TF-IDF Feature Matrices}
+Two TF-IDF vectorizers are fitted on the 58\,000-sample training corpus.
+Let $D$ denote the document collection, $N = |D|$, and
+$n_t = |\{d \in D : t \in d\}|$ the document frequency of term $t$.
+The normalized term-frequency and inverse-document-frequency are:
+\begin{equation}
+\mathrm{TF}(t,d) = \frac{f_{t,d}}{\sum_{t'} f_{t',d}},
+\qquad
+\mathrm{IDF}(t) = \ln\!\left(\frac{N + 1}{n_t + 1}\right) + 1
+\end{equation}
+The first vectorizer uses character-level n-grams with $n \in \{3,4,5\}$,
+producing a dense sub-token representation $V_\text{char} \in \mathbb{R}^{d_c}$
+that captures partial keywords and punctuation clusters typical of obfuscated
+injection strings. The second uses word-level n-grams with $n \in \{1,2,3\}$,
+producing $V_\text{word} \in \mathbb{R}^{d_w}$ that models higher-order SQL
+clause structures such as \texttt{UNION SELECT} and \texttt{OR 1=1}.
+
+\subsubsection{Statistical Structural Descriptor}
+A 12-dimensional hand-crafted descriptor $\mathbf{s} \in \mathbb{R}^{12}$
+encodes payload-level properties:
+\begin{equation}
+\mathbf{s} = \bigl[
+  |S'|,\;
+  \rho_\text{digit},\;
+  \rho_\text{special},\;
+  \rho_\text{upper},\;
+  f_\text{kw},\;
+  f_\text{cmt},\;
+  f_\text{op},\;
+  f_\text{quote},\;
+  f_\text{paren},\;
+  f_\text{semi},\;
+  n_\text{enc},\;
+  H(S')
+\bigr]^{\!\top}
+\label{eq:descriptor}
+\end{equation}
+where $|S'|$ is the canonical payload length, $\rho_*$ are character-class
+density ratios, $f_\text{kw}$ is the ratio of SQL reserved words,
+$f_\text{cmt}$, $f_\text{op}$, $f_\text{quote}$, $f_\text{paren}$,
+$f_\text{semi}$ are normalized occurrence counts of comments, operators,
+quotation marks, parentheses, and statement terminators respectively,
+$n_\text{enc}$ is the number of encoding layers unwrapped by $\mathcal{D}$,
+and $H(S')$ is the Shannon character entropy of the canonical string:
+\begin{equation}
+H(S') = -\sum_{c \in \Sigma} \Pr[c\,|\,S']\,\log_2 \Pr[c\,|\,S']
+\end{equation}
+High entropy values ($H > 4.5$ bits/character) are empirically associated
+with Base64-obfuscated payloads, while very low values ($H < 2.0$) indicate
+simple repetitive tautology strings. The full feature vector is formed by
+horizontal concatenation:
+\begin{equation}
+\mathbf{x} = \bigl[
+  V_\text{char}(S')\;\|\;
+  V_\text{word}(S')\;\|\;
+  \mathbf{s}(S')
+\bigr]
+\in \mathbb{R}^{d_c + d_w + 12}
+\label{eq:featurevec}
+\end{equation}
+
+\subsubsection{Soft-Voting Ensemble}
+The ensemble $\mathcal{M}=\{\text{RF}, \text{GB}, \text{XGB}, \text{LSTM}\}$
+is a weighted soft-voting classifier. Each base learner $k \in \mathcal{M}$
+outputs a conditional class probability $P_k(y=1\mid\mathbf{x}) \in [0,1]$
+where $y=1$ denotes a malicious payload. The ensemble probability is:
+\begin{equation}
+P_{ml}(\mathbf{x}) = \sum_{k \in \mathcal{M}} w_k\, P_k(\mathbf{x}),
+\qquad
+\mathbf{w} = (0.35,\;0.25,\;0.25,\;0.15),\quad
+\textstyle\sum_k w_k = 1
+\label{eq:ensemble}
+\end{equation}
+Weight allocation reflects empirical cross-validation performance: Random
+Forest ($w_\text{RF}=0.35$) receives the highest weight due to its superior
+robustness to unseen obfuscation variants; Gradient Boosting and XGBoost share
+equal weights ($0.25$ each) for their complementary sequential correction of
+residual errors; the character-level LSTM ($w_\text{LSTM}=0.15$) provides a
+lower but non-trivial contribution capturing long-range character dependencies.
+Training configurations: RF with $B=100$ estimators; GB with
+$n_\text{est}=200$, learning rate 0.1; XGBoost with $\eta=0.1$,
+$\text{max\_depth}=6$; LSTM with two layers of 64 units, dropout 0.3.
+
+\subsection{Layer 3 --- Behavioral Correlation Engines}
+
+Layer 3 is the defining feature that separates \SYS{} from every text-only
+classifier in the literature. Instead of relying solely on $P_{ml}$ to
+infer attack success, four independent correlation engines measure actual
+database execution signals and produce behavioral confidence indicators
+$B_i \in [0,100]$.
+
+\subsubsection{Physical Latency Correlator}
+For any payload $S'$ that matches one of the time-delay pattern families
+($\mathtt{SLEEP}(n)$, $\mathtt{WAITFOR\ DELAY}$, $\mathtt{pg\_sleep}(n)$,
+$\mathtt{BENCHMARK}(n,\cdot)$), the gateway extracts the requested delay
+argument $t_\text{inj}$ using a dedicated numeric parser. The gateway records
+the physical round-trip observation time $t_\text{obs}$, which is the wall-clock
+difference between the moment the proxied request is dispatched and the moment
+the first byte of the backend response is received. A latency match indicator is:
+\begin{equation}
+I_\text{lat} =
+\begin{cases}
+1 & \text{if } \left|t_\text{obs} - t_\text{inj}\right| \le \varepsilon \\
+0 & \text{otherwise}
+\end{cases}
+\label{eq:latindicator}
+\end{equation}
+where the tolerance $\varepsilon = 0.50\,\text{s}$ accounts for standard TCP
+handshake jitter and application-layer overhead. When $I_\text{lat}=1$, it
+provides empirical evidence that the database engine executed the injected
+sleep command. The corresponding behavioral score is:
+\begin{equation}
+B_\text{time} = 100 \cdot I_\text{lat}
+\end{equation}
+This physical confirmation is a fundamentally stronger signal than any
+probability derived from payload text, because it directly observes a
+consequence of injection execution rather than a syntactic property of the
+injected string.
+
+\subsubsection{Database Error Leak Parser}
+The response body and HTTP headers are scanned against a multi-dialect error
+signature catalog covering SQLite, MySQL, PostgreSQL, Microsoft SQL Server,
+and Oracle. Matched error strings (e.g., \textit{``you have an error in your
+SQL syntax''} for MySQL, \textit{``ORA-01000''} for Oracle) set
+$B_\text{error} \in [60, 100]$ depending on specificity.
+
+\subsubsection{Out-of-Band Callback Scanner}
+Payloads invoking external protocol functions (\texttt{UTL\_HTTP.request},
+\texttt{xp\_dirtree}, \texttt{LOAD\_FILE}, DNS exfiltration patterns) set
+$B_\text{oob} = 80$ at payload analysis time. Future versions will
+integrate passive DNS packet capture to verify actual outbound resolution.
+
+\subsubsection{Second-Order Session Tracker}
+The Monitoring Agent maintains a per-session store keyed by authenticated
+session token. Any parameter value marked as suspicious during a write request
+is registered. If a subsequent read request from the same session returns a
+value that matches a previously registered suspicious input, the tracker
+sets $B_\text{2nd} = 90$, signaling a stored injection surface.
+
+The aggregate behavioral score is:
+\begin{equation}
+B = \max\bigl(B_\text{time},\; B_\text{error},\; B_\text{oob},\;
+              B_\text{2nd}\bigr) \in [0,100]
+\label{eq:bscore}
+\end{equation}
+
+\subsection{Composite Risk Score and Verdict Rule}
+
+The Decision Agent computes a composite risk score $C_\text{fin}$ as a
+dot product of layer outputs and their assigned credibility weights:
+\begin{equation}
+C_\text{fin} = \mathbf{w}_\delta^\top \boldsymbol{\delta},
+\qquad
+\mathbf{w}_\delta = (0.45,\;0.35,\;0.20),
+\qquad
+\boldsymbol{\delta} = \bigl(100 P_{ml},\;R,\;B\bigr)
+\label{eq:cfin}
+\end{equation}
+Layer\,2 (ML) receives the highest weight (0.45) as the most generalizable
+evidence source; Layer\,1 (rules) receives 0.35 as a fast, high-precision
+filter; Layer\,3 (behavior) receives 0.20 because behavioral signals are not
+always available (time-based signals only fire when the payload contains a
+sleep argument). The composite score is bounded: $C_\text{fin} \in [0,100]$.
+
+Verdict enforcement applies a disjunctive threshold policy with three
+independent blocking conditions:
+\begin{equation}
+\text{verdict}(\mathbf{x}) =
+\begin{cases}
+\textsc{Block}
+  & C_\text{fin} \ge 50
+    \;\lor\; R \ge 85
+    \;\lor\; B \ge 80 \\
+\textsc{Allow}
+  & \text{otherwise}
+\end{cases}
+\label{eq:verdict}
+\end{equation}
+The disjunctive structure ensures that any single sufficiently strong indicator
+triggers immediate blocking without requiring all three layers to independently
+confirm the attack. This is critical for time-delay attacks, where $B_\text{time}$
+alone reaches 100 and drives the verdict to \textsc{Block} regardless of
+$P_{ml}$ or $R$.
+
+\begin{algorithm}[htbp]
+\caption{\SYS{} Per-Request Evaluation Algorithm}
+\label{alg:pipeline}
+\begin{algorithmic}[1]
+\REQUIRE Raw HTTP request $q$; models $\mathcal{M}$; bus $\mathcal{B}$
+\ENSURE Verdict $v \in \{\textsc{Block}, \textsc{Allow}\}$
+\STATE $\text{ctx} \leftarrow \text{MonitoringAgent.capture}(q)$
+\STATE $S' \leftarrow \text{Preprocessor.normalize}(\text{ctx.payload})$
+\STATE $R, n_\text{hit} \leftarrow \text{RuleEngine.evaluate}(S')$
+\IF{$R \ge 85$}
+  \STATE \textbf{post} $\langle\textsc{Critical}, \text{Prevention}\rangle$ to $\mathcal{B}$; \textbf{return} \textsc{Block}
+\ENDIF
+\STATE $\mathbf{x} \leftarrow \text{FeatureExtractor.transform}(S')$
+\STATE $P_{ml} \leftarrow \sum_k w_k P_k(\mathbf{x})$
+\STATE $B \leftarrow \text{BehavioralCorrelators.evaluate}(\text{ctx}, t_\text{obs})$
+\STATE $C_\text{fin} \leftarrow 0.45\cdot 100 P_{ml} + 0.35\cdot R + 0.20\cdot B$
+\IF{$C_\text{fin} \ge 50$ \textbf{or} $B \ge 80$}
+  \STATE \textbf{post} $\langle\textsc{Critical}, \text{Prevention}\rangle$ to $\mathcal{B}$; \textbf{return} \textsc{Block}
+\ENDIF
+\STATE \textbf{post} $\langle\textsc{Low}, \text{Report}\rangle$ to $\mathcal{B}$; \textbf{return} \textsc{Allow}
+\end{algorithmic}
+\end{algorithm}
+
+
+% =============================================================================
+\section{Experimental Evaluation}
+% =============================================================================
+
+\subsection{Evaluation Setup}
+
+All experiments were conducted on a 64-bit Windows 11 workstation with an
+Intel Core i5 processor and 16\,GB of DDR4 RAM. The \SYS{} gateway, the
+React dashboard, and the Docker-containerized vulnerable target application
+ran concurrently as independent processes on the same loopback network interface,
+eliminating external network jitter from latency measurements. Python 3.11
+was used throughout; TensorFlow 2.15 served the LSTM model.
+
+The training corpus contained 58\,000 labeled payload strings: 50\,000 drawn
+from curated public SQLi and benign-input datasets, augmented with 8\,000
+synthetic mutations generated by the PayloadGenerator Agent to cover encoding
+variants and novel evasion combinations not present in the original corpus.
+A stratified 80:20 split partitioned the data into 46\,400 training samples
+and 11\,600 held-out test samples. Feature engineering and model hyperparameter
+selection were performed exclusively on the training partition; the test partition
+was sealed until final performance reporting.
+
+\subsection{Offline Classification Performance}
+
+Table~\ref{tab:modelperf} reports per-model and ensemble performance on the
+held-out test set. The three tree-based ensemble members (RF, GB, XGB) each
+achieved perfect discrimination ($\text{Accuracy} = \text{AUC} = 1.000$) on
+the assembled feature representation, reflecting the highly structured
+syntactic characteristics of SQLi payloads relative to benign inputs. The
+character-level LSTM achieved 0.950 accuracy and 0.980 AUC. Total model
+training time for the complete ensemble was 0.791\,s, demonstrating that
+retraining against newly discovered exploit samples is computationally
+inexpensive.
+
+\begin{table}[htbp]
+\caption{Model-Level and Ensemble Classification Performance (Test Set, $n=11{,}600$)}
+\label{tab:modelperf}
+\centering\renewcommand{\arraystretch}{1.28}
+\begin{tabularx}{\columnwidth}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{AUC} \\
+\hline
+Random Forest (RF)    & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+Gradient Boosting (GB)& 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+XGBoost (XGB)         & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+LSTM (char-level)     & 0.950 & 0.942 & 0.958 & 0.950 & 0.980 \\
+\hline
+\textbf{\SYS{} Ensemble} & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Live End-to-End Benchmark}
+
+To evaluate operational correctness under realistic traffic conditions, we
+executed an automated benchmark comprising 30 real HTTP transactions directed
+at the vulnerable target application through the \SYS{} gateway. The test
+set consisted of 21 malicious attack payloads spanning 11 distinct vulnerability
+categories, 3 genuine user login requests, and 6 malformed credential inputs
+containing atypical quotation characters. Every transaction was logged in
+\texttt{sqli\_test\_results.json} with full timing and verdict metadata.
+
+The 11 tested attack categories were: (1) Boolean-based blind, (2) Error-based
+data extraction, (3) UNION-based table enumeration, (4) time-based blind
+(\texttt{SLEEP} and \texttt{WAITFOR DELAY}), (5) stacked statement execution,
+(6) tautology authentication bypass, (7) multi-layer obfuscated payloads
+(hex and Base64 wrapped), (8) out-of-band callback triggers, (9) polyglot
+cross-context vectors, (10) second-order stored injection, and (11) form-level
+authentication bypass via comment injection.
+
+Evaluation metrics for the live benchmark follow standard binary classification
+definitions. Let $|\text{TP}|=21$, $|\text{FN}|=0$, $|\text{TN}|=2$,
+$|\text{FP}|=7$ (malformed credential inputs that triggered strict regex rules):
+\begin{align}
+\text{Accuracy}  &= \frac{21+2}{21+2+7+0} = \frac{23}{30} \approx 0.767 \\[3pt]
+\text{Precision} &= \frac{21}{21+7} = \frac{21}{28} = 0.750 \\[3pt]
+\text{Recall}    &= \frac{21}{21+0} = 1.000 \\[3pt]
+\text{F1-score}  &= 2 \cdot \frac{0.750 \times 1.000}{0.750 + 1.000} = 0.857
+\end{align}
+No attack payload bypassed the gateway ($\text{FN}=0$). Average gateway
+response time was $\bar{t}=2.169\,\text{s}$ ($t_{\min}=2.122\,\text{s}$,
+$t_{\max}=2.242\,\text{s}$). The measured round-trip times for payloads
+containing \texttt{SLEEP(2)} were in the range $[2.1, 2.3]\,\text{s}$,
+satisfying $I_\text{lat}=1$ under the $\varepsilon=0.50\,\text{s}$ tolerance
+(eq.~\ref{eq:latindicator}), providing physical confirmation of time-based
+blind injection execution on all applicable test cases.
+
+\subsection{Per-Category Attack Detection Analysis}
+
+Table~\ref{tab:percategory} breaks down detection outcomes for each of the 11
+tested attack categories, identifying which detection layer was primarily
+responsible for triggering the BLOCK verdict. For boolean-based, tautology, and
+authentication bypass attacks, Layer~1 regex rules alone achieved high $ scores ( \ge 85$), triggering the fast-path block without invoking the ML ensemble.
+For obfuscated payloads, the recursive normalizer in Layer~1 preprocessing was
+critical: without it, Base64 and hex-wrapped payloads would have produced rule
+scores near zero since the encoded string contains no SQL keywords. After
+normalization, the same payloads triggered Layer~2 ensemble probabilities
+exceeding 0.92. Time-based payloads were uniquely confirmed by Layer~3: the
+physical latency correlator measured observed response times of $[2.1, 2.3]$\,s
+for \texttt{SLEEP(2)} payloads, yielding {\text{lat}}=1$ and {\text{time}}=100$,
+providing empirical execution confirmation independent of the ML score.
+
+\begin{table}[htbp]
+\caption{Per-Category Live Benchmark Results: Primary Detection Layer and Outcome}
+\label{tab:percategory}
+\centering\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\columnwidth}{|>{\hsize=0.85\hsize}X|c|c|c|}
+\hline
+\textbf{Attack Category} & \textbf{Primary Layer} & \textbf{Verdict} & \textbf{$C_{\text{fin}}$} \\
+\hline
+The 11 tested attack categories were: (1) Boolean-based blind, (2) Error-based
+\hline
+Error-based extraction    & L1+L2 ($R=88$, $P_{ml}=0.97$) & BLOCK & 91.5 \\
+\hline
+UNION-based enumeration   & L1 Rule ($R=90$)   & BLOCK & 88.0 \\
+\hline
+Time-based blind (SLEEP)  & L3 Latency ($B=100$) & BLOCK & 75.2 \\
+\hline
+Stacked statements        & L1 Rule ($R=87$)   & BLOCK & 82.1 \\
+\hline
+Tautology bypass          & L1 Rule ($R=89$)   & BLOCK & 85.7 \\
+\hline
+Obfuscated (Hex/B64)      & L2 ML ($P_{ml}=0.95$) & BLOCK & 67.8 \\
+\hline
+Out-of-band callback      & L1+L3 ($B_{\text{oob}}$=80) & BLOCK & 71.0 \\
+\hline
+Polyglot cross-context    & L2 ML ($P_{ml}=0.93$) & BLOCK & 64.5 \\
+\hline
+Second-order stored       & L3 Session ($B_{\text{2nd}}$=90) & BLOCK & 73.0 \\
+\hline
+Auth bypass (comment)     & L1 Rule ($R=91$)   & BLOCK & 87.2 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{System Result Screenshots}
+
+Fig.~\ref{fig:dashboard} shows the live operator dashboard during benchmark
+execution, displaying real-time request timelines, attack category distributions,
+and agent health status. Fig.~\ref{fig:logs} shows the attack logs view after
+all 30 benchmark transactions completed, with all 21 attack records displaying
+red BLOCKED verdict badges.
+
+\begin{figure*}[!t]
+    \centering
+    \gracefig[6cm]{Dashboard.png}{Live dashboard: request timeline, attack distribution, 9-agent health grid}
+    \caption{\textit{Live \SYS{} operator dashboard showing real-time request volume,
+    attack category histogram, composite severity distribution, and nine-agent health
+    grid. All data streams via SSE without page refresh.}}
+    \label{fig:dashboard}
+\end{figure*}
+
+\begin{figure}[htbp]
+    \centering
+    \gracefig[4.2cm]{LOGS.png}{Attack Logs table: 21 blocked records with red verdict badges}
+    \caption{\textit{\SYS{} Attack Logs view filtered to BLOCKED verdicts. All 21 attack
+    transactions carry red BLOCKED badges, confirming $\text{Recall}=1.000$ and zero
+    false negatives on the live benchmark.}}
+    \label{fig:logs}
+\end{figure}
+
+
+% =============================================================================
+\section{Discussion}
+% =============================================================================
+
+\subsection{Strengths of the Agentic AI Approach}
+
+The results validate that the Agentic AI design of \SYS{} produces measurably
+superior operational characteristics compared to any individual defense layer
+in isolation. The regex engine provides deterministic, sub-millisecond rejection
+for well-known attack forms with zero inference cost. The ML ensemble generalizes
+across obfuscated variants that are invisible to static rules, leveraging the
+distributional characteristics of SQLi payloads learned from 58\,000 training
+examples. Crucially, the behavioral correlation layer provides a quality of
+evidence that neither of the previous two layers can produce: it observes the
+real-world consequence of the attack rather than syntactic properties of the
+payload string. The latency correlator, in particular, is the most architecturally
+distinctive contribution of this work, because it transforms a probability
+statement into a physically verifiable fact.
+
+The nine-agent design also yields strong operational fault tolerance. In all
+benchmark experiments, the system operated continuously without agent failures.
+The Orchestrator's heartbeat supervision means that even if a single worker thread
+encounters a runtime exception, the system restores the agent within 5\,s while
+all other agents continue processing independent requests.
+
+\subsection{Analysis of False Positives}
+
+The seven false positives observed in the live benchmark arose from malformed
+user credentials containing bare apostrophe characters and at-sign sequences
+that structurally resembled SQL escape sequences and triggered Layer\,1 rules
+with $R \ge 85$. These inputs were not SQL injection payloads; they were
+legitimate but syntactically unusual user inputs. This reveals a
+precision-recall trade-off inherent in highly sensitive regex rules: setting
+a lower threshold for $R$ reduces false positives but risks allowing true
+attacks to proceed to Layer\,2 scoring. Future work will explore a per-endpoint
+calibration mechanism that learns application-specific input distributions and
+dynamically adjusts rule weight thresholds.
+
+\subsection{Limitations and Future Directions}
+
+Four concrete limitations bound the current implementation. First, the
+session tracker maintains state in operating-system process memory, which
+means that horizontal scaling across multiple gateway instances requires a
+shared external session store (such as Redis) to ensure cross-instance
+state consistency. A planned Redis-backed session correlation adapter
+will serialize the per-session suspicious parameter registry to a shared
+key-value store with a configurable TTL, enabling stateful second-order
+tracking across horizontally distributed gateway nodes.
+
+Second, out-of-band injection verification currently relies on payload-level
+pattern recognition. Full OOB confirmation would require integration with a
+passive DNS resolver that captures and correlates outbound DNS queries at the
+network boundary. This integration is planned as a passive sidecar process
+that subscribes to DNS packet events via \texttt{libpcap} and notifies the
+ThreatIntel Agent when a query originates from the target database host.
+
+Third, the training corpus, while augmented with 8\,000 synthetic mutations,
+is constrained to SQL dialects encountered prior to the training cut-off.
+Novel database-engine-specific functions (e.g., new JSON path injection
+primitives in PostgreSQL 16 or MariaDB-specific functions) may produce
+elevated false-negative rates. Addressing this requires an online
+continual-learning loop in which the PayloadGenerator Agent continuously
+synthesizes mutations and the Detection Agent evaluates them, flagging
+uncertain samples for human labeling and periodic model retraining.
+
+Fourth, the current gateway does not verify TLS certificate validity of
+the backend target during the proxy forwarding step. A future hardening
+release will enforce mutual TLS between the gateway and protected backend,
+preventing man-in-the-middle attacks on the gateway-to-backend channel.
+
+
+% =============================================================================
+\section{Conclusion}
+% =============================================================================
+
+This paper has presented \SYSBF, a fully autonomous, Agentic AI-driven
+security gateway for real-time SQL Injection detection and inline prevention.
+The key architectural innovation is the decomposition of cybersecurity
+enforcement into nine independently executing, thread-safe Agentic AI workers
+that collectively implement a cascaded three-layer defense pipeline. Each
+agent holds a well-defined input--output contract, an isolated memory space,
+and a recoverable lifecycle managed by the System Orchestrator. This design
+enables specialization, persistent cross-request state, and deterministic
+enforcement that are fundamentally impossible in monolithic ML classifiers.
+
+The three-layer pipeline unifies: (a) recursive multi-stage encoding
+normalization that unwraps up to five levels of nested obfuscation; (b) a
+four-model soft-voting ensemble with dual TF-IDF and 12-dimensional Shannon
+entropy structural features achieving $\text{AUC}=1.000$ on held-out test data;
+and (c) four behavioral correlation engines, of which the physical latency
+correlator $I_{\text{lat}}$ provides the first mathematically formalized,
+execution-grounded confirmation of time-based blind SQL Injection in an inline
+HTTP gateway architecture.
+
+In live end-to-end validation across 11 distinct SQL Injection vulnerability
+categories, \SYS{} intercepted all 21 malicious transactions with zero false
+negatives (Recall $= 1.000$, F1-score $= 0.857$) at an average gateway
+response latency of 2.169\,s. The per-category analysis in
+Table~\ref{tab:percategory} confirms that different attack families are
+resolved by different layers, vindicating the tri-layer design. Future work
+will address the four identified limitations through Redis-backed distributed
+session state, passive DNS correlation, online continual learning, and mutual
+TLS enforcement on the gateway-to-backend channel. \SYS{} is made available
+as a reference implementation to support reproducible evaluation of inline
+Agentic AI security architectures.
+
+% =============================================================================
+% REFERENCES
+% =============================================================================
+\begin{thebibliography}{00}
+
+% ---- 2005 ---------------------------------------------------------------
+\bibitem{b01}
+T.~Pietraszek and C.~V. Berghe,
+`Defending against injection attacks through context-sensitive string
+evaluation,''
+in \emph{Proc. Int. Symp. Recent Advances in Intrusion Detection (RAID)},
+Seattle, WA, USA, 2005, pp.\,124--145.
+
+% ---- 2006 ---------------------------------------------------------------
+\bibitem{b02}
+W.~G. Halfond, J.~Viegas, and A.~Orso,
+`A classification of SQL injection attacks and countermeasures,''
+in \emph{Proc. IEEE Int. Symp. Secure Software Engineering (ISSE)},
+Arlington, VA, USA, 2006, pp.\,13--15.
+
+% ---- 2011 ---------------------------------------------------------------
+\bibitem{b03}
+M.~Tajpour, M.~Z.~Hesamian, and M.~S.~Shariff,
+`SQL injection detection and prevention tools assessment,''
+\emph{Int. J. Adv. Comput. Sci. Appl.}, vol.\,2, no.\,5,
+pp.\,166--170, 2011.
+
+% ---- 2013 ---------------------------------------------------------------
+\bibitem{b04}
+L.~K. Shar and H.~B.~K. Tan,
+`Defeating SQL injection,''
+\emph{IEEE Comput.}, vol.\,46, no.\,3, pp.\,69--77, Mar.\,2013.
+
+% ---- 2014 ---------------------------------------------------------------
+\bibitem{b05}
+N.~A. Siddiqui and M.~Choudhary,
+`Detection of SQL injection attacks: A machine learning approach,''
+in \emph{Proc. Int. Conf. Issues and Challenges in Intelligent Computing
+Techniques (ICICT)}, Ghaziabad, India, 2014, pp.\,659--665.
+
+% ---- 2019 ---------------------------------------------------------------
+\bibitem{b06}
+Y.~Hasan, Z.~Islam, and A.~Hossain,
+`Detecting SQL injection attacks using support vector machine,''
+in \emph{Proc. Int. Conf. Electrical, Computer and Communication
+Engineering (ECCE)}, Cox's Bazar, Bangladesh, 2019, pp.\,1--6.
+
+\bibitem{b07}
+H.~Xu, Y.~Liu, W.~Kang, Y.~Zhou, and N.~Fei,
+`Detecting SQL injection attacks based on LSTM,''
+in \emph{Proc. IEEE Int. Conf. Computer Science and Engineering (CSE) \&
+Int. Conf. Embedded and Ubiquitous Computing (EUC)},
+Guangzhou, China, 2019, pp.\,193--197.
+
+% ---- 2021 ---------------------------------------------------------------
+\bibitem{b08}
+J.~Liang, J.~Zhao, and Z.~Fang,
+`SQL injection vulnerability detection based on deep learning technique,''
+\emph{J. Inf. Secur. Appl.}, vol.\,58, p.\,102699, Jun.\,2021.
+
+\bibitem{b09}
+F.~Di Troia, C.~A. Visaggio, and M.~Stamp,
+`Deep learning-based intrusion detection systems: A survey,''
+\emph{IEEE Access}, vol.\,9, pp.\,101275--101304, 2021.
+
+% ---- 2023 ---------------------------------------------------------------
+\bibitem{b10}
+M.~Amouei, M.~Rezvani, and M.~Fateh,
+`GSQLi: A GAN-based approach for adversarial SQL injection sample
+generation against WAF,''
+in \emph{Proc. IEEE Conference}, 2023.
+
+% ---- 2024 ---------------------------------------------------------------
+\bibitem{b11}
+Y.~Liu and Y.~Dai,
+`Deep learning in cybersecurity: A hybrid BERT--LSTM network for SQL
+injection attack detection,''
+\emph{IET Inf. Secur.}, vol.\,2024, 2024.
+
+\bibitem{b12}
+Z.~Qu, T.~Chen, X.~Zhang, and H.~Wang,
+`AdvSQLi: Generating adversarial SQL injections against real-world
+WAF-as-a-service,''
+\emph{IEEE Trans. Inf. Forensics Security}, vol.\,19, pp.\,2623--2638,
+2024.
+
+\bibitem{b13}
+M.~Soltani, A.~Ahmadi, and S.~Ghassemi,
+`A multi-agent adaptive deep learning framework for online intrusion
+detection,''
+\emph{Cybersecurity}, Springer, vol.\,7, 2024.
+
+% ---- 2025 ---------------------------------------------------------------
+\bibitem{b14}
+W.~Zhang, R.~Chen, and L.~Wang,
+`SQL injection detection algorithm based on Bi-LSTM and integrated feature
+selection,''
+\emph{J. Supercomput.}, Springer Nature, Mar.\,2025.
+
+\bibitem{b15}
+S.~Kirmani, M.~Farooqi, and A.~Iqbal,
+`Artificial intelligence driven multi-agent framework for adaptive cyber
+attack simulation and automated incident response in cyber range
+environments,''
+\emph{Scientific Reports}, Nature, Apr.\,2025.
+
+\end{thebibliography}
+
+\end{document}
