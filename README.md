@@ -239,32 +239,5 @@ Results will be output to console and saved in `sqli_test_results.json`.
 
 ---
 
-## 📄 Research Paper & Citation
-
-The complete, camera-ready IEEE conference LaTeX source code is available in [`IEEE_Paper_Latex_Code.txt`](IEEE_Paper_Latex_Code.txt).
-
-```bibtex
-@inproceedings{svayamprahari2026,
-  author    = {CTM Praveen Kumar and Rishi U and M Veeresh and Muruli Mohan and B Sai Kumar},
-  title     = {Svaya\d{m}prahari: A Tri-Layer Agentic Artificial Intelligence Framework for Real-Time SQL Injection Detection, Behavioral Confirmation, and Inline Threat Neutralization Using Ensemble Machine Learning and Empirical Latency Correlation},
-  booktitle = {Proceedings of the IEEE Conference},
-  year      = {2026}
-}
-```
-
----
-
-## 👥 Authors & Contributors
-
-* **CTM Praveen Kumar** (`ctm.praveen@gmail.com`)
-* **Rishi U** (`rajan28138@gmail.com`)
-* **M Veeresh** (`veereshveer.565@gmail.com`)
-* **Muruli Mohan** (`muralimohana2003@gmail.com`)
-* **B Sai Kumar** (`bsk001188@gmail.com`)
-
-*Department of Artificial Intelligence and Machine Learning, Ballari Institute of Technology and Management, Ballari, Karnataka, India.*
-
----
-
-## 📜 License
+# 📜 License
 This project is open-source under the [MIT License](LICENSE).
